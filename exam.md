@@ -10,6 +10,9 @@
 -   int8
 -   uint16
 
+答：
+Solidity 语言有以下数据类型：整型、无符号整型、布尔、字符串、动态数组、固定数组、地址、字节数组、字节、引用类型、类型别名
+
 评分标准：每个数据类型计 1 分  
 参考资料： https://docs.soliditylang.org/en/latest/types.html
 
@@ -18,8 +21,49 @@
 评分标准：每条有效的（提供文本命令和测试截图） API 计 2 分，例如：
 
 ---
+答：
+1、web3_clientVersion: 返回当前运行节点的客户端版本
 
-第 1 个 API： net_version
+curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":1}' http://localhost:8545
+
+2、web3_sha3: 对给定的数据做Keccak-256哈希
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"web3_sha3","params":["0x68656c6c6f20776f726c64"],"id":1}' http://localhost:8545
+
+3、eth_blockNumber: 返回当前区块高度
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' http://localhost:8545
+
+4、eth_getBalance: 获取指定地址的余额
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
+
+5、eth_getTransactionCount: 获取指定地址的交易数
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
+
+6、eth_getBlockByNumber: 获取指定区块的详细信息
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x0","true"],"id":1}' http://localhost:8545
+
+7、eth_getTransactionByHash: 获取指定交易的详细信息
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x0000000000000000000000000000000000000000000000000000000000000000"],"id":1}' http://localhost:8545
+
+8、eth_getTransactionReceipt: 获取指定交易的收据
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x0000000000000000000000000000000000000000000000000000000000000000"],"id":1}' http://localhost:8545
+
+9、eth_getCode: 获取指定地址的合约代码
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
+
+10、eth_gasPrice: 返回当前网络的gas价格
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":1}' http://localhost:8545
+
+
+
 
 ```shell
 curl -s -X POST -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com \
@@ -38,6 +82,11 @@ curl -s -X POST -H "Content-Type: application/json" https://matic-mumbai.chainst
 
 -   验证成功： 10 分，对过程要截图
 -   解释正确： 10 分
+
+答：
+![img.png](img.png)
+    解释：在同一个合约里，不同的函数可能会有不同的 GAS 费用，因为它们可能会执行不同数量的操作或使用不同数量的存储空间。例如，如果一个函数需要在合约的存储器中存储大量数据，则它将比另一个函数消耗更多的 GAS。此外，如果一个函数调用其他函数或合约，则这也会增加 GAS 消耗。
+
 
 ## 第 4 题：用 Remix 部署校验合约
 
