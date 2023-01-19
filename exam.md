@@ -11,8 +11,21 @@
 -   uint16
 
 答：
-Solidity 语言有以下数据类型：整型、无符号整型、布尔、字符串、动态数组、固定数组、地址、字节数组、字节、引用类型、类型别名
-
+Solidity 语言有以下数据类型：
+布尔类型 (bool)
+整型 (int, uint)
+小数 (fixed, ufixed)
+地址 (address)
+字符串 (string)
+字节数组 (bytes)
+动态字节数组 (byte)
+枚举类型 (enum)
+数组 (array)
+结构体 (struct)
+映射 (mapping)
+接口 (interface)
+以太坊保留关键字 (msg, block)
+以太坊全局变量 (now, gasleft, etc)
 评分标准：每个数据类型计 1 分  
 参考资料： https://docs.soliditylang.org/en/latest/types.html
 
@@ -22,45 +35,46 @@ Solidity 语言有以下数据类型：整型、无符号整型、布尔、字�
 
 ---
 答：
-1、web3_clientVersion: 返回当前运行节点的客户端版本
+1、查询当前块高度:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_1.png](img_1.png)
 
-curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":1}' http://localhost:8545
+2、查询指定块的详细信息:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x0", true],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_2.png](img_2.png)
 
-2、web3_sha3: 对给定的数据做Keccak-256哈希
 
-curl -X POST --data '{"jsonrpc":"2.0","method":"web3_sha3","params":["0x68656c6c6f20776f726c64"],"id":1}' http://localhost:8545
+3、查询指定地址的余额:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0xADDRESS", "latest"],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_3.png](img_3.png)
 
-3、eth_blockNumber: 返回当前区块高度
+4、发送交易:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_sendTransaction","params":[{"from":"0xADDRESS","to":"0xADDRESS","gas":"0xGAS","gasPrice":"0xGASPRICE","value":"0xAMOUNT","data":"0xDATA"}],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_4.png](img_4.png)
 
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' http://localhost:8545
+5、查询交易详细信息:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0xTRANSACTION_HASH"],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_5.png](img_5.png)
 
-4、eth_getBalance: 获取指定地址的余额
+6、查询指定地址合约代码:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getCode","params":["0xCONTRACT_ADDRESS", "latest"],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_6.png](img_6.png)
 
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
+7、调用合约方法:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0xCONTRACT_ADDRESS","data":"0xDATA"},"latest"],"id":1}' -H "Content-Type: application/json" https://matic-mumbai.chainstacklabs.com
+![img_7.png](img_7.png)
 
-5、eth_getTransactionCount: 获取指定地址的交易数
+8、查询指定块中交易数量:
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByNumber","params":["0xBLOCK_NUMBER"],"id":1}' https://matic-mumbai.chainstacklabs.com
+![img_8.png](img_8.png)
 
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
+9、查询指定交易的收据:
+curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0xTRANSACTION_HASH"],"id":1}' https://matic-mumbai.chainstacklabs.com
+![img_9.png](img_9.png)
 
-6、eth_getBlockByNumber: 获取指定区块的详细信息
-
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x0","true"],"id":1}' http://localhost:8545
-
-7、eth_getTransactionByHash: 获取指定交易的详细信息
-
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x0000000000000000000000000000000000000000000000000000000000000000"],"id":1}' http://localhost:8545
-
-8、eth_getTransactionReceipt: 获取指定交易的收据
-
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x0000000000000000000000000000000000000000000000000000000000000000"],"id":1}' http://localhost:8545
-
-9、eth_getCode: 获取指定地址的合约代码
-
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x0000000000000000000000000000000000000000","latest"],"id":1}' http://localhost:8545
-
-10、eth_gasPrice: 返回当前网络的gas价格
-
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":1}' http://localhost:8545
+10、返回当前网络的gas价格
+curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":1}' https://matic-mumbai.chainstacklabs.com
+![img_10.png](img_10.png)
 
 
 
